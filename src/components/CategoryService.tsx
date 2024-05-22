@@ -109,8 +109,10 @@ export default function CategoryService() {
                         <p>Duration: {service.duration} minutes</p>
                       </CardContent>
                       <CardFooter>
-                        <div className="flex items-center justify-center flex-wrap gap-2">
-                          <BookService service={service} handymanId={service.handymanId} customer={authUser} />
+                          <div className="flex items-center justify-center flex-wrap gap-2">
+                            {authUser?.type === "CUSTOMER" && (
+                              <BookService service={service} handymanId={service.handymanId} customer={authUser} />
+                            )}
                           <Dialog>
                             <DialogTrigger asChild>
                               <Avatar onClick={() => setSelectedHandyman(handymen[service.handymanId])}>
