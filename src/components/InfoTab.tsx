@@ -30,9 +30,11 @@ export default function InfoTab({ user }: { user: any }) {
               <p>
                 <strong>Email:</strong> {user.email}
               </p>
-              <p>
+              {user.type === "HANDYMAN" && (
+                <p>
                 <strong>Rating:</strong> {user.rating}
               </p>
+                )}
               <p>
                 <strong>Suspended:</strong>{" "}
                 {user.isSuspended ? "Yes" : "No"}

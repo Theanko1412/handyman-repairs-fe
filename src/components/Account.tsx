@@ -14,6 +14,7 @@ import { Button } from "./ui/button";
 import ServicesTab from "./ServicesTab";
 import InfoTab from "./InfoTab";
 import ScheduleTab from "./ScheduleTab";
+import BasicSkeleton from "./ui/BasicSkeleton";
 
 interface Reservation {
   id: string;
@@ -107,10 +108,6 @@ export default function Account() {
     }
   }, [authUser]);
 
-  if (!user) {
-    return <p>Loading...</p>;
-  }
-
   const handleServiceUpdate = (updatedService: any) => {
     setServices((prevServices) =>
       prevServices.map((service) =>
@@ -143,13 +140,10 @@ export default function Account() {
     <div>
       <Header />
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
-        {error && (
-          <Alert variant="destructive" className="w-96">
-            <AlertCircle className="h-6 w-6 text-red-500" />
-            <AlertTitle>Api Error</AlertTitle>
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
+        {loading ? (
+          <BasicSkeleton />
+        ) : (
+        <>
         {user && (
           <Card className="w-full mb-4">
             <CardHeader>
@@ -166,6 +160,7 @@ export default function Account() {
                       <TabsTrigger value="services">Services</TabsTrigger>
                     </>
                   )}
+                  {user.type === "CUSTOMER" && <TabsTrigger value="home">Home</TabsTrigger>}
                   <TabsTrigger value="notifications">Notifications</TabsTrigger>
                   <TabsTrigger value={user.type === "CUSTOMER" ? "reservations" : "schedule"}>
                     {user.type === "CUSTOMER" ? "Reservations" : "Schedule"}
@@ -201,9 +196,28 @@ export default function Account() {
                     </TabsContent>
                   </>
                 )}
+                {user.type === "CUSTOMER" && (
+                  <TabsContent value="home">
+                    {workshop ? (
+                        <Card className="mb-4">
+                          <CardHeader>
+                            <CardTitle>{workshop.name}</CardTitle>
+                            <CardDescription>Home Information</CardDescription>
+                          </CardHeader>
+                          <CardContent>
+                            <p>Address: {workshop.streetNumber} {workshop.streetName}, {workshop.cityName}, {workshop.countryName}</p>
+                          </CardContent>
+                        </Card>
+                      ) : (
+                        <p>No home information available.</p>
+                      )}
+                  </TabsContent>
+                    )}
               </Tabs>
             </CardContent>
           </Card>
+          )}
+              </>      
         )}
       </div>
     </div>

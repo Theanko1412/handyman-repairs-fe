@@ -15,7 +15,7 @@ interface AuthContextType {
   isLoggedIn: boolean;
   user: User | null;
   login: (username: string, password: string) => Promise<void>;
-  register: (firstName: string, lastName: string, email: string, password: string, homeOrWorkshopId: string, userType: string) => void;
+  register: (firstName: string, lastName: string, email: string, password: string, userType: string) => void;
   logout: () => void;
 }
 
@@ -64,20 +64,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     checkSession();
   }, []);
 
-  const register = async (firstName: string, lastName: string, email: string, password: string, homeOrWorkshopId: string, userType: string) => {
+  const register = async (firstName: string, lastName: string, email: string, password: string, userType: string) => {
     try {
       const response = await ApiService.post(
         '/auth/register/' + userType,
-        new URLSearchParams({
+        {
           firstName,
           lastName,
           email,
           password,
-          homeOrWorkshopId,
-        }),
+        },
         {
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json',
           },
           withCredentials: true,
         }

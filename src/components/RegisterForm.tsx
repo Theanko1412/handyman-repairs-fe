@@ -80,7 +80,6 @@ export default function RegisterForm() {
         data.lastName,
         data.username,
         data.password,
-        "home",
         data.isHandyman ? "handyman" : "customer"
       );
       console.log("Login successful");
@@ -103,7 +102,7 @@ export default function RegisterForm() {
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-7">
             <FormField
                 control={form.control}
                 name="isHandyman"
@@ -174,7 +173,7 @@ export default function RegisterForm() {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Login</Button>
+              <Button type="submit">Register</Button>
             </form>
           </Form>
         </DialogContent>

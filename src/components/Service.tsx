@@ -40,8 +40,11 @@ import ApiService from "../ApiService";
 import BasicSkeleton from "./ui/BasicSkeleton";
 import { Input } from "./ui/input";
 import { useState, useEffect } from "react";
+import BookService from "./BookService";
+import { useAuth } from "./AuthContext";
 
 export default function Service() {
+  const { user: AuthUser } = useAuth();
   const [services, setServices] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -197,7 +200,8 @@ export default function Service() {
                 />
               </div>
               <div className="flex flex-wrap gap-4">
-                {filteredServices.map((service) => (
+                  {filteredServices.map((service) => (
+                  console.log(service),
                   <Card className="w-80" key={service.id}>
                     <CardHeader>
                       <CardTitle>{service.name}</CardTitle>
@@ -208,32 +212,10 @@ export default function Service() {
                       <p>Duration: {service.duration} minutes</p>
                     </CardContent>
                     <CardFooter>
-                      <div className="flex items-center justify-center flex-wrap gap-2">
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button>Book</Button>
-                          </DialogTrigger>
-                          <DialogContent className="sm:max-w-[425px]">
-                            <DialogHeader>
-                              <DialogTitle>Make Reservation</DialogTitle>
-                              <DialogDescription>
-                                Complete your reservation by filling out the form
-                              </DialogDescription>
-                            </DialogHeader>
-                            <div className="grid gap-4 py-4">
-                              <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="name" className="text-right">
-                                  Name
-                                </Label>
-                              </div>
-                              <div className="grid grid-cols-4 items-center gap-4"></div>
-                            </div>
-                            <DialogFooter>
-                              <Button type="submit">Book</Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </Dialog>
-
+                          <div className="flex items-center justify-center flex-wrap gap-2">
+                            {AuthUser?.type === "CUSTOMER" && (
+                              <BookService service={service} handymanId={service.handymanId} customer={AuthUser} />
+                              )}
                         <Dialog>
                           <DialogTrigger asChild>
                             <Avatar
