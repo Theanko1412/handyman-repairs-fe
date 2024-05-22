@@ -11,7 +11,8 @@ import { TabsContent } from "@/components/ui/tabs";
 import ApiService from "@/ApiService";
 import { Toaster } from "./ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from "@/components/ui/skeleton";
+import { useState } from "react";
 
 const enum Status {
   PENDING = "PENDING",
@@ -31,18 +32,19 @@ export default function ScheduleTab({
   user: any;
   authUser: any;
   reservations: any;
-    onUpdateReservation: (updatedReservation: any) => void;
+  onUpdateReservation: (updatedReservation: any) => void;
   loading: boolean;
 }) {
   const { toast } = useToast();
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   async function handleReservationStateUpdate(
     status: Status,
-    reservationId: string
+    reservationId: string,
   ) {
     try {
       const response = await ApiService.patch(
-        `/reservation/${reservationId}?status=${status}`
+        `/reservation/${reservationId}?status=${status}`,
       );
       if (response.status >= 200 && response.status < 300) {
         const updatedReservation = response.data;
@@ -71,6 +73,14 @@ export default function ScheduleTab({
     }
   }
 
+  function sortByDateTime(a, b) {
+    if (sortOrder === "asc") {
+      return new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime();
+    } else {
+      return new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime();
+    }
+  }
+
   return (
     <div>
       <Toaster />
@@ -81,24 +91,44 @@ export default function ScheduleTab({
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead><Skeleton className="h-6 w-full" /></TableHead>
-                <TableHead><Skeleton className="h-6 w-full" /></TableHead>
-                <TableHead><Skeleton className="h-6 w-full" /></TableHead>
-                <TableHead><Skeleton className="h-6 w-full" /></TableHead>
+                <TableHead>
+                  <Skeleton className="h-6 w-full" />
+                </TableHead>
+                <TableHead>
+                  <Skeleton className="h-6 w-full" />
+                </TableHead>
+                <TableHead>
+                  <Skeleton className="h-6 w-full" />
+                </TableHead>
+                <TableHead>
+                  <Skeleton className="h-6 w-full" />
+                </TableHead>
                 {user.email === authUser.email && (
-                  <TableHead><Skeleton className="h-6 w-full" /></TableHead>
+                  <TableHead>
+                    <Skeleton className="h-6 w-full" />
+                  </TableHead>
                 )}
               </TableRow>
             </TableHeader>
             <TableBody>
               {[...Array(5)].map((_, i) => (
                 <TableRow key={i}>
-                  <TableCell><Skeleton className="h-6 w-full" /></TableCell>
-                  <TableCell><Skeleton className="h-6 w-full" /></TableCell>
-                  <TableCell><Skeleton className="h-6 w-full" /></TableCell>
-                  <TableCell><Skeleton className="h-6 w-full" /></TableCell>
+                  <TableCell>
+                    <Skeleton className="h-6 w-full" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-6 w-full" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-6 w-full" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-6 w-full" />
+                  </TableCell>
                   {user.email === authUser.email && (
-                    <TableCell><Skeleton className="h-6 w-full" /></TableCell>
+                    <TableCell>
+                      <Skeleton className="h-6 w-full" />
+                    </TableCell>
                   )}
                 </TableRow>
               ))}
@@ -114,14 +144,64 @@ export default function ScheduleTab({
                       <TableHead>Handyman</TableHead>
                       <TableHead>Service</TableHead>
                       <TableHead>Status</TableHead>
-                      <TableHead>Date and Time</TableHead>
+                      <TableHead className="flex items-center">
+                        Date and Time
+                        <Button
+                          onClick={() =>
+                            setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+                          }
+                          size="sm"
+                          variant="link"
+                          className="ml-2 p-0"
+                        >
+                          {sortOrder === "asc" ? (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="lucide lucide-arrow-down-narrow-wide"
+                            >
+                              <path d="m3 16 4 4 4-4" />
+                              <path d="M7 20V4" />
+                              <path d="M11 4h4" />
+                              <path d="M11 8h7" />
+                              <path d="M11 12h10" />
+                            </svg>
+                          ) : (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="lucide lucide-arrow-down-wide-narrow"
+                            >
+                              <path d="m3 16 4 4 4-4" />
+                              <path d="M7 20V4" />
+                              <path d="M11 4h10" />
+                              <path d="M11 8h7" />
+                              <path d="M11 12h4" />
+                            </svg>
+                          )}
+                        </Button>
+                      </TableHead>
                       {user.email === authUser.email && (
                         <TableHead>Actions</TableHead>
                       )}
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {reservations.map((reservation) => (
+                    {reservations.sort(sortByDateTime).map((reservation) => (
                       <TableRow key={reservation.id}>
                         <TableCell>
                           {reservation.handyman.firstName}{" "}
@@ -141,7 +221,7 @@ export default function ScheduleTab({
                                   onClick={() =>
                                     handleReservationStateUpdate(
                                       Status.CANCELLED,
-                                      reservation.id
+                                      reservation.id,
                                     )
                                   }
                                 >
@@ -158,7 +238,7 @@ export default function ScheduleTab({
                                   onClick={() =>
                                     handleReservationStateUpdate(
                                       Status.COMPLETED,
-                                      reservation.id
+                                      reservation.id,
                                     )
                                   }
                                 >
@@ -181,14 +261,64 @@ export default function ScheduleTab({
                     <TableHead>Customer</TableHead>
                     <TableHead>Service</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead>Date and Time</TableHead>
+                    <TableHead className="flex items-center">
+                      Date and Time
+                      <Button
+                        onClick={() =>
+                          setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+                        }
+                        size="sm"
+                        variant="link"
+                        className="ml-2 p-0"
+                      >
+                        {sortOrder === "asc" ? (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="lucide lucide-arrow-down-narrow-wide"
+                          >
+                            <path d="m3 16 4 4 4-4" />
+                            <path d="M7 20V4" />
+                            <path d="M11 4h4" />
+                            <path d="M11 8h7" />
+                            <path d="M11 12h10" />
+                          </svg>
+                        ) : (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="lucide lucide-arrow-down-wide-narrow"
+                          >
+                            <path d="m3 16 4 4 4-4" />
+                            <path d="M7 20V4" />
+                            <path d="M11 4h10" />
+                            <path d="M11 8h7" />
+                            <path d="M11 12h4" />
+                          </svg>
+                        )}
+                      </Button>
+                    </TableHead>
                     {user.email === authUser.email && (
                       <TableHead>Actions</TableHead>
                     )}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {reservations.map((reservation) => (
+                  {reservations.sort(sortByDateTime).map((reservation) => (
                     <TableRow key={reservation.id}>
                       <TableCell>
                         {reservation.customer.firstName}{" "}
@@ -207,7 +337,7 @@ export default function ScheduleTab({
                                 onClick={() =>
                                   handleReservationStateUpdate(
                                     Status.ACCEPTED,
-                                    reservation.id
+                                    reservation.id,
                                   )
                                 }
                               >
@@ -218,7 +348,7 @@ export default function ScheduleTab({
                                 onClick={() =>
                                   handleReservationStateUpdate(
                                     Status.REJECTED,
-                                    reservation.id
+                                    reservation.id,
                                   )
                                 }
                               >

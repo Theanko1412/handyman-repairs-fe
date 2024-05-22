@@ -48,20 +48,20 @@ export default function HandymanView() {
     const fetchHandyman = async () => {
       try {
         const handymanResponse = await ApiService.get(
-          `/handyman/${handymanId}`
+          `/handyman/${handymanId}`,
         );
         setHandyman(handymanResponse.data);
 
         if (handymanResponse.data.homeOrWorkshopId) {
           const workshopResponse = await ApiService.get(
-            `/home-or-workshop/${handymanResponse.data.homeOrWorkshopId}`
+            `/home-or-workshop/${handymanResponse.data.homeOrWorkshopId}`,
           );
           setWorkshop(workshopResponse.data);
         }
 
         if (handymanResponse.data.scheduleId) {
           const scheduleResponse = await ApiService.get(
-            `/schedule/${handymanResponse.data.scheduleId}`
+            `/schedule/${handymanResponse.data.scheduleId}`,
           );
           setSchedule(scheduleResponse.data);
 
@@ -69,17 +69,17 @@ export default function HandymanView() {
             scheduleResponse.data.reservationIds.map(async (id: string) => {
               const reservation = await ApiService.get(`/reservation/${id}`);
               const customer = await ApiService.get(
-                `/customer/${reservation.data.customerId}`
+                `/customer/${reservation.data.customerId}`,
               );
               const service = await ApiService.get(
-                `/service/${reservation.data.serviceId}`
+                `/service/${reservation.data.serviceId}`,
               );
               return {
                 ...reservation.data,
                 customer: customer.data,
                 service: service.data,
               };
-            })
+            }),
           );
           setReservations(reservationResponses);
         }
@@ -87,8 +87,8 @@ export default function HandymanView() {
         if (handymanResponse.data.serviceIds) {
           const serviceResponses = await Promise.all(
             handymanResponse.data.serviceIds.map((id: string) =>
-              ApiService.get(`/service/${id}`)
-            )
+              ApiService.get(`/service/${id}`),
+            ),
           );
           setServices(serviceResponses.map((res) => res.data));
         }
@@ -116,16 +116,16 @@ export default function HandymanView() {
   const handleServiceUpdate = (updatedService: any) => {
     setServices((prevServices) =>
       prevServices.map((service) =>
-        service.id === updatedService.id ? updatedService : service
-      )
+        service.id === updatedService.id ? updatedService : service,
+      ),
     );
   };
 
   const handleServiceDelete = (deletedService: any) => {
     setServices((prevServices) =>
-      prevServices.filter((service) => service.id !== deletedService.id)
+      prevServices.filter((service) => service.id !== deletedService.id),
     );
-  }
+  };
 
   const handleServiceAdd = (newService: any) => {
     setServices((prevServices) => [...prevServices, newService]);
@@ -136,8 +136,8 @@ export default function HandymanView() {
       prevReservations.map((reservation) =>
         reservation.id === updatedReservation.id
           ? { ...reservation, status: updatedReservation.status }
-          : reservation
-      )
+          : reservation,
+      ),
     );
   };
 
@@ -174,8 +174,8 @@ export default function HandymanView() {
                     authUser={authUser}
                     categories={categories}
                     services={services}
-                      onUpdate={handleServiceUpdate}
-                      onDelete={handleServiceDelete}
+                    onUpdate={handleServiceUpdate}
+                    onDelete={handleServiceDelete}
                     handyman={handyman}
                     onAdd={handleServiceAdd}
                   />

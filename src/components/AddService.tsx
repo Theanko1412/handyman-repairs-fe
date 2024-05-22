@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogTrigger,
@@ -36,7 +36,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function AddService({ handymanId, onAdd }: { handymanId: string, onAdd: (newService: any) => void }) {
+export default function AddService({
+  handymanId,
+  onAdd,
+}: {
+  handymanId: string;
+  onAdd: (newService: any) => void;
+}) {
   const { toast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
@@ -91,8 +97,8 @@ export default function AddService({ handymanId, onAdd }: { handymanId: string, 
       .max(24 * 60, {
         message: "Duration must be at most 1440",
       }),
-     categoryId: z.string().uuid({
-         message: "Category is required",
+    categoryId: z.string().uuid({
+      message: "Category is required",
     }),
   });
 
@@ -103,10 +109,7 @@ export default function AddService({ handymanId, onAdd }: { handymanId: string, 
   async function onSubmit(data: z.infer<typeof AddServiceSchema>) {
     const formData = { ...data, handymanId };
     try {
-      const response = await ApiService.post(
-        `/service`,
-        formData
-      );
+      const response = await ApiService.post(`/service`, formData);
 
       if (response.status >= 200 && response.status < 300) {
         toast({
@@ -224,7 +227,10 @@ export default function AddService({ handymanId, onAdd }: { handymanId: string, 
                   <FormItem>
                     <FormLabel>Category</FormLabel>
                     <FormControl>
-                      <Select value={field.value} onValueChange={field.onChange}>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Select a category" />
                         </SelectTrigger>

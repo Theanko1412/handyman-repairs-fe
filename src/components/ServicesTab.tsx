@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -27,9 +27,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Toaster } from "./ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
-import BookService from './BookService';
-import DeleteService from './DeleteService';
-import { Input } from './ui/input';
+import BookService from "./BookService";
+import DeleteService from "./DeleteService";
+import { Input } from "./ui/input";
 
 export default function ServicesTab({
   authUser,
@@ -40,12 +40,12 @@ export default function ServicesTab({
   handyman,
   onAdd,
 }) {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const filteredServices = services.filter(
     (service) =>
       service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      service.description.toLowerCase().includes(searchTerm.toLowerCase())
+      service.description.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -72,9 +72,11 @@ export default function ServicesTab({
                   <p>Price: ${service.price}</p>
                   <p>Duration: {service.duration} minutes</p>
                   <div className="text-sm text-muted-foreground">
-                    {categories.find(
-                      (category) => category.id === service.categoryId
-                    )?.name}
+                    {
+                      categories.find(
+                        (category) => category.id === service.categoryId,
+                      )?.name
+                    }
                   </div>
                 </CardContent>
                 {handyman.email === authUser?.email && (

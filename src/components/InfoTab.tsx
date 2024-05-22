@@ -15,8 +15,8 @@ export default function InfoTab({ user }: { user: any }) {
         <Card className="mb-4">
           <CardHeader>
             <CardTitle>Personal Information</CardTitle>
-                 <CardDescription>
-                    {user.type === "HANDYMAN" ? "Handyman details" : "User details"}
+            <CardDescription>
+              {user.type === "HANDYMAN" ? "Handyman details" : "User details"}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -32,12 +32,11 @@ export default function InfoTab({ user }: { user: any }) {
               </p>
               {user.type === "HANDYMAN" && (
                 <p>
-                <strong>Rating:</strong> {user.rating}
-              </p>
-                )}
+                  <strong>Rating:</strong> {user.rating}
+                </p>
+              )}
               <p>
-                <strong>Suspended:</strong>{" "}
-                {user.isSuspended ? "Yes" : "No"}
+                <strong>Suspended:</strong> {user.isSuspended ? "Yes" : "No"}
               </p>
             </div>
           </CardContent>

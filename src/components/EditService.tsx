@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogTrigger,
@@ -37,7 +37,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function EditService({ service, onUpdate }: { service: any, onUpdate: (updatedService: any) => void }) {
+export default function EditService({
+  service,
+  onUpdate,
+}: {
+  service: any;
+  onUpdate: (updatedService: any) => void;
+}) {
   const { toast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
@@ -128,7 +134,7 @@ export default function EditService({ service, onUpdate }: { service: any, onUpd
     try {
       const response = await ApiService.patch(
         `/service/${service.id}`,
-        formData
+        formData,
       );
 
       if (response.status >= 200 && response.status < 300) {
@@ -247,7 +253,10 @@ export default function EditService({ service, onUpdate }: { service: any, onUpd
                   <FormItem>
                     <FormLabel>Category</FormLabel>
                     <FormControl>
-                      <Select value={field.value} onValueChange={field.onChange}>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Select a category" />
                         </SelectTrigger>

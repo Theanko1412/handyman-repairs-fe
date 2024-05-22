@@ -19,11 +19,11 @@ export default function WorkshopTab({ workshop }: { workshop: any }) {
               <CardDescription>Workshop Information</CardDescription>
             </CardHeader>
             <CardContent>
-                <p className="text-sm text-muted-foreground">Address:</p>
-                <p className="text-lg">
+              <p className="text-sm text-muted-foreground">Address:</p>
+              <p className="text-lg">
                 {workshop.streetNumber} {workshop.streetName},{" "}
                 {workshop.cityName}, {workshop.countryName}
-                </p>
+              </p>
             </CardContent>
           </Card>
         ) : (

@@ -80,7 +80,7 @@ export default function RegisterForm() {
         data.lastName,
         data.username,
         data.password,
-        data.isHandyman ? "handyman" : "customer"
+        data.isHandyman ? "handyman" : "customer",
       );
       console.log("Login successful");
     } catch (error) {
@@ -103,18 +103,18 @@ export default function RegisterForm() {
           </DialogHeader>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-7">
-            <FormField
+              <FormField
                 control={form.control}
                 name="isHandyman"
                 render={({ field }) => (
                   <div className="flex justify-center gap-2 items-center">
-                <Label>Customer</Label>
-                <Switch
+                    <Label>Customer</Label>
+                    <Switch
                       checked={field.value}
                       onCheckedChange={field.onChange}
-                />
-                <Label>Handyman</Label>
-              </div>
+                    />
+                    <Label>Handyman</Label>
+                  </div>
                 )}
               />
               <FormField

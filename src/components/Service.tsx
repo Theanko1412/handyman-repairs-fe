@@ -66,7 +66,7 @@ export default function Service() {
           ...new Set(response.data.map((service) => service.handymanId)),
         ];
         const handymanResponses = await Promise.all(
-          handymanIds.map((id) => ApiService.get(`/handyman/${id}`))
+          handymanIds.map((id) => ApiService.get(`/handyman/${id}`)),
         );
         const handymanData = handymanResponses.reduce((acc, curr) => {
           acc[curr.data.id] = curr.data;
@@ -164,7 +164,7 @@ export default function Service() {
                             <Check
                               className={cn(
                                 "mr-2 h-4 w-4",
-                                value === "all" ? "opacity-100" : "opacity-0"
+                                value === "all" ? "opacity-100" : "opacity-0",
                               )}
                             />
                             All Categories
@@ -180,7 +180,7 @@ export default function Service() {
                                   "mr-2 h-4 w-4",
                                   value === category.id
                                     ? "opacity-100"
-                                    : "opacity-0"
+                                    : "opacity-0",
                                 )}
                               />
                               {category.name}
@@ -200,79 +200,96 @@ export default function Service() {
                 />
               </div>
               <div className="flex flex-wrap gap-4">
-                  {filteredServices.map((service) => (
-                  console.log(service),
-                  <Card className="w-80" key={service.id}>
-                    <CardHeader>
-                      <CardTitle>{service.name}</CardTitle>
-                      <CardDescription>{service.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <p>Price: ${service.price}</p>
-                      <p>Duration: {service.duration} minutes</p>
-                    </CardContent>
-                    <CardFooter>
+                {filteredServices.map(
+                  (service) => (
+                    console.log(service),
+                    (
+                      <Card className="w-80" key={service.id}>
+                        <CardHeader>
+                          <CardTitle>{service.name}</CardTitle>
+                          <CardDescription>
+                            {service.description}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <p>Price: ${service.price}</p>
+                          <p>Duration: {service.duration} minutes</p>
+                        </CardContent>
+                        <CardFooter>
                           <div className="flex items-center justify-center flex-wrap gap-2">
                             {AuthUser?.type === "CUSTOMER" && (
-                              <BookService service={service} handymanId={service.handymanId} customer={AuthUser} />
-                              )}
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Avatar
-                              onClick={() =>
-                                setSelectedHandyman(
-                                  handymen[service.handymanId]
-                                )
-                              }
-                            >
-                              <AvatarFallback>
-                                {getInitials(
-                                  `${
-                                    handymen[service.handymanId]?.firstName ||
-                                    ""
-                                  } ${
-                                    handymen[service.handymanId]?.lastName || ""
-                                  }`
-                                )}
-                              </AvatarFallback>
-                            </Avatar>
-                          </DialogTrigger>
-                          <DialogContent className="sm:max-w-[425px]">
-                            <DialogHeader>
-                              <DialogTitle>Handyman Details</DialogTitle>
-                              <DialogDescription>
-                                Information about the handyman
-                              </DialogDescription>
-                            </DialogHeader>
-                            {selectedHandyman && (
-                              <div className="grid gap-4 py-4">
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                  <Label className="text-right">Name:</Label>
-                                  <p className="col-span-3">
-                                    {selectedHandyman.firstName}{" "}
-                                    {selectedHandyman.lastName}
-                                  </p>
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                  <Label className="text-right">Email:</Label>
-                                  <p className="col-span-3">
-                                    {selectedHandyman.email}
-                                  </p>
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                  <Label className="text-right">Rating:</Label>
-                                  <p className="col-span-3">
-                                    {selectedHandyman.rating}
-                                  </p>
-                                </div>
-                              </div>
+                              <BookService
+                                service={service}
+                                handymanId={service.handymanId}
+                                customer={AuthUser}
+                              />
                             )}
-                          </DialogContent>
-                        </Dialog>
-                      </div>
-                    </CardFooter>
-                  </Card>
-                ))}
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <Avatar
+                                  onClick={() =>
+                                    setSelectedHandyman(
+                                      handymen[service.handymanId],
+                                    )
+                                  }
+                                >
+                                  <AvatarFallback>
+                                    {getInitials(
+                                      `${
+                                        handymen[service.handymanId]
+                                          ?.firstName || ""
+                                      } ${
+                                        handymen[service.handymanId]
+                                          ?.lastName || ""
+                                      }`,
+                                    )}
+                                  </AvatarFallback>
+                                </Avatar>
+                              </DialogTrigger>
+                              <DialogContent className="sm:max-w-[425px]">
+                                <DialogHeader>
+                                  <DialogTitle>Handyman Details</DialogTitle>
+                                  <DialogDescription>
+                                    Information about the handyman
+                                  </DialogDescription>
+                                </DialogHeader>
+                                {selectedHandyman && (
+                                  <div className="grid gap-4 py-4">
+                                    <div className="grid grid-cols-4 items-center gap-4">
+                                      <Label className="text-right">
+                                        Name:
+                                      </Label>
+                                      <p className="col-span-3">
+                                        {selectedHandyman.firstName}{" "}
+                                        {selectedHandyman.lastName}
+                                      </p>
+                                    </div>
+                                    <div className="grid grid-cols-4 items-center gap-4">
+                                      <Label className="text-right">
+                                        Email:
+                                      </Label>
+                                      <p className="col-span-3">
+                                        {selectedHandyman.email}
+                                      </p>
+                                    </div>
+                                    <div className="grid grid-cols-4 items-center gap-4">
+                                      <Label className="text-right">
+                                        Rating:
+                                      </Label>
+                                      <p className="col-span-3">
+                                        {selectedHandyman.rating}
+                                      </p>
+                                    </div>
+                                  </div>
+                                )}
+                              </DialogContent>
+                            </Dialog>
+                          </div>
+                        </CardFooter>
+                      </Card>
+                    )
+                  ),
+                )}
               </div>
             </CardContent>
           </Card>

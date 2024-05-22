@@ -23,7 +23,7 @@ import {
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Switch } from "./ui/switch";
-import { z } from "zod"
+import { z } from "zod";
 import Login from "./Login";
 
 export default function Header() {
@@ -86,7 +86,10 @@ export default function Header() {
             <DropdownMenuTrigger asChild>
               <Avatar className="h-9 w-9">
                 <AvatarImage alt="@shadcn" src="/placeholder-avatar.jpg" />
-                <AvatarFallback>{user?.firstName.charAt(0).toUpperCase()}{user?.lastName.charAt(0).toUpperCase()}</AvatarFallback>
+                <AvatarFallback>
+                  {user?.firstName.charAt(0).toUpperCase()}
+                  {user?.lastName.charAt(0).toUpperCase()}
+                </AvatarFallback>
                 <span className="sr-only">Toggle user menu</span>
               </Avatar>
             </DropdownMenuTrigger>

@@ -57,51 +57,64 @@ export default function Handyman() {
       <Header />
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
         {loading ? (
-        <BasicSkeleton />
-        ): (
+          <BasicSkeleton />
+        ) : (
           <Card className="w-full mb-4">
-          <CardHeader>
-            <CardTitle>Handymen</CardTitle>
-            <CardDescription>Available handymen</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-center flex-wrap gap-4">
-              {data &&
-                data
-                  .filter((handyman: any) => !handyman.isSuspended)
-                  .sort((a: any, b: any) => b.rating - a.rating)
-                  .map((handyman: any) => (
-                    <Card className="w-80" key={handyman.id}>
-                      <CardHeader>
-                        <CardTitle>{handyman.firstName} {handyman.lastName}</CardTitle>
-                        <CardDescription>Rating: {handyman.rating}</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div>
-                          {workshop &&
-                            workshop
-                              .filter((ws: any) => ws.id === handyman.homeOrWorkshopId)
-                              .map((ws: any) => (
-                                <div key={ws.id}>
-                                  <p className="text-sm">{ws.streetNumber} {ws.streetName}</p>
-                                  <p className="text-lg">{ws.countryName}, {ws.cityName}</p>
-                                </div>
-                              ))}
-                        </div>
-                      </CardContent>
-                      <CardFooter>
-                        <div className="flex items-center justify-center flex-wrap gap-2">
-                          <Button asChild>
-                            <Link to={`/handyman/${handyman.id}`}>View</Link>
-                          </Button>
-                          <p className="text-sm">Services: {handyman.serviceIds.length}</p>
-                        </div>
-                      </CardFooter>
-                    </Card>
-                  ))}
-            </div>
-          </CardContent>
-        </Card>
+            <CardHeader>
+              <CardTitle>Handymen</CardTitle>
+              <CardDescription>Available handymen</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-center flex-wrap gap-4">
+                {data &&
+                  data
+                    .filter((handyman: any) => !handyman.isSuspended)
+                    .sort((a: any, b: any) => b.rating - a.rating)
+                    .map((handyman: any) => (
+                      <Card className="w-80" key={handyman.id}>
+                        <CardHeader>
+                          <CardTitle>
+                            {handyman.firstName} {handyman.lastName}
+                          </CardTitle>
+                          <CardDescription>
+                            Rating: {handyman.rating}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <div>
+                            {workshop &&
+                              workshop
+                                .filter(
+                                  (ws: any) =>
+                                    ws.id === handyman.homeOrWorkshopId,
+                                )
+                                .map((ws: any) => (
+                                  <div key={ws.id}>
+                                    <p className="text-sm">
+                                      {ws.streetNumber} {ws.streetName}
+                                    </p>
+                                    <p className="text-lg">
+                                      {ws.countryName}, {ws.cityName}
+                                    </p>
+                                  </div>
+                                ))}
+                          </div>
+                        </CardContent>
+                        <CardFooter>
+                          <div className="flex items-center justify-center flex-wrap gap-2">
+                            <Button asChild>
+                              <Link to={`/handyman/${handyman.id}`}>View</Link>
+                            </Button>
+                            <p className="text-sm">
+                              Services: {handyman.serviceIds.length}
+                            </p>
+                          </div>
+                        </CardFooter>
+                      </Card>
+                    ))}
+              </div>
+            </CardContent>
+          </Card>
         )}
       </div>
     </div>

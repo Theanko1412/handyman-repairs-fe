@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -31,7 +31,11 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { format, parseISO } from "date-fns";
@@ -41,12 +45,22 @@ const BookServiceSchema = z.object({
   date: z.date({
     required_error: "A date is required.",
   }),
-  time: z.string({
-    required_error: "A time is required.",
-  }).regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format"),
+  time: z
+    .string({
+      required_error: "A time is required.",
+    })
+    .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format"),
 });
 
-export default function BookService({ handymanId, service, customer }: { handymanId: any, service: any, customer: any }) {
+export default function BookService({
+  handymanId,
+  service,
+  customer,
+}: {
+  handymanId: any;
+  service: any;
+  customer: any;
+}) {
   const { toast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [handyman, setHandyman] = useState<any>(null);
@@ -70,8 +84,8 @@ export default function BookService({ handymanId, service, customer }: { handyma
 
   async function onSubmit(data: z.infer<typeof BookServiceSchema>) {
     const dateTimeString = format(
-      new Date(`${format(data.date, 'yyyy-MM-dd')}T${data.time}:00`),
-      "yyyy-MM-dd'T'HH:mm:ssXXX"
+      new Date(`${format(data.date, "yyyy-MM-dd")}T${data.time}:00`),
+      "yyyy-MM-dd'T'HH:mm:ssXXX",
     );
 
     try {
@@ -81,6 +95,7 @@ export default function BookService({ handymanId, service, customer }: { handyma
         serviceId: service.id,
         dateTime: dateTimeString,
       });
+      console.log(response);
       if (response.status >= 200 && response.status < 300) {
         toast({
           title: "Reservation successful",
@@ -92,8 +107,8 @@ export default function BookService({ handymanId, service, customer }: { handyma
         toast({
           variant: "destructive",
           title: "Reservation failed",
-          description: "Failed to book your reservation. Please try again later.",
-          duration: 2000,
+          description: response.data.message,
+          duration: 10000,
         });
       }
     } catch (error) {
@@ -101,8 +116,8 @@ export default function BookService({ handymanId, service, customer }: { handyma
       toast({
         variant: "destructive",
         title: "Reservation failed",
-        description: "Failed to book your reservation. Please try again later.",
-        duration: 2000,
+        description: error.response.data.message,
+        duration: 10000,
       });
     }
   }
@@ -117,7 +132,9 @@ export default function BookService({ handymanId, service, customer }: { handyma
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Book {service.name} service</DialogTitle>
-            <DialogDescription>Choose a date and time to book the service</DialogDescription>
+            <DialogDescription>
+              Choose a date and time to book the service
+            </DialogDescription>
           </DialogHeader>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -134,7 +151,7 @@ export default function BookService({ handymanId, service, customer }: { handyma
                             variant={"outline"}
                             className={cn(
                               "w-[240px] pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
+                              !field.value && "text-muted-foreground",
                             )}
                           >
                             {field.value ? (
@@ -151,9 +168,7 @@ export default function BookService({ handymanId, service, customer }: { handyma
                           mode="single"
                           selected={field.value}
                           onSelect={field.onChange}
-                          disabled={(date) =>
-                            new Date() > date
-                          }
+                          disabled={(date) => new Date() > date}
                           initialFocus
                         />
                       </PopoverContent>
@@ -168,11 +183,15 @@ export default function BookService({ handymanId, service, customer }: { handyma
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
                     <FormLabel>Time</FormLabel>
-                      <FormControl>
-                         <Input {...field} type="time" className={cn(
-                              "w-[240px] pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )} />
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="time"
+                        className={cn(
+                          "w-[240px] pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground",
+                        )}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
