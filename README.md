@@ -26,12 +26,12 @@ By default backend url is set to ```localhost:8080/api/v1/```, to change it set 
 
 
 ## Screenshots
-![home](./support/screenshots/screenshots/home-page.jpg)
-![handymen](./support/screenshots/screenshots/handymen.jpg)
-![services](./support/screenshots/screenshots/services.jpg)
-![admin-services](./support/screenshots/screenshots/admin-services.jpg)
-![admin-schedule](./support/screenshots/screenshots/schedule.jpg)
-![admin-repair](./support/screenshots/screenshots/repair.jpg)
-![user-booking](./support/screenshots/screenshots/userbook.jpg)
-![user-schedule](./support/screenshots/screenshots/userschedule.jpg)
-![services-dark](./support/screenshots/screenshots/services-dark.jpg)
+![home](./support/screenshots/home-page.jpg)
+![handymen](./support/screenshots/handymen.jpg)
+![services](./support/screenshots/services.jpg)
+![admin-services](./support/screenshots/admin-services.jpg)
+![admin-schedule](./support/screenshots/schedule.jpg)
+![admin-repair](./support/screenshots/repair.jpg)
+![user-booking](./support/screenshots/userbook.jpg)
+![user-schedule](./support/screenshots/userschedule.jpg)
+![services-dark](./support/screenshots/services-dark.jpg)
