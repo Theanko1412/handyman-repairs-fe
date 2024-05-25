@@ -22,6 +22,13 @@ Run dev:
 npm run dev
 ```
 
+Run tests (both backend and frontend need to be running):
+```bash
+npm run dev
+npx cypress run
+```
+
+
 By default backend url is set to ```localhost:8080/api/v1/```, to change it set ```REACT_APP_API_URL``` in ```.env``` file or docker env var.
 
 
